@@ -1,0 +1,590 @@
+<title>Nodpeak</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --void:#0A0B0D; --panel:#101216; --panel-2:#15181E; --raised:#1C2027;
+    --ink:#F4F6F9; --muted:#98A1AE; --faint:#5C646F; --rule:#22262E; --rule-2:#2E333C;
+    --cyan:#25D6E8; --cyan-dim:#17A8B8; --cyan-deep:#0C6E79;
+    --glow:rgba(37,214,232,.16); --grid:rgba(255,255,255,.025);
+    --star:#25D6E8;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--void);color:var(--ink);
+    font-family:"Inter",system-ui,-apple-system,sans-serif;font-size:16px;line-height:1.6;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  .grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:46px 46px;mask-image:radial-gradient(ellipse 90% 60% at 50% 0%,#000 40%,transparent 100%);}
+  main{position:relative;z-index:1}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 28px}
+  a{color:inherit;text-decoration:none}
+  .mono{font-family:"JetBrains Mono",monospace}
+
+  /* nav */
+  nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);
+    background:rgba(10,11,13,.72);border-bottom:1px solid var(--rule)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{display:flex;align-items:center;gap:10px}
+  .brand .wm{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:1.05rem;letter-spacing:-.01em}
+  .brand .wm .c{color:var(--cyan)}
+  .nav-links{display:flex;gap:28px;align-items:center}
+  .nav-links a{font-size:14px;color:var(--muted)}
+  .nav-links a:hover{color:var(--ink)}
+  .nav-cta{display:flex;gap:12px;align-items:center}
+  .ghost{font-size:13.5px;color:var(--muted);border:1px solid var(--rule-2);padding:8px 14px;border-radius:8px;font-family:"JetBrains Mono",monospace}
+  .ghost:hover{color:var(--ink);border-color:var(--faint)}
+  .ghost .star{color:var(--cyan)}
+  .btn{background:var(--cyan);color:#04181B;font-weight:600;font-size:14px;padding:9px 16px;border-radius:8px;border:none;cursor:pointer;font-family:"Inter",sans-serif;transition:box-shadow .2s,transform .1s}
+  .btn:hover{box-shadow:0 0 28px -6px var(--glow)}
+  .btn:active{transform:translateY(1px)}
+
+  /* hero */
+  .hero{text-align:center;padding:88px 0 30px;position:relative}
+  .hero::before{content:"";position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:640px;height:340px;max-width:100%;
+    background:radial-gradient(ellipse at center,var(--glow),transparent 70%);filter:blur(20px);pointer-events:none}
+  .eyebrow{display:inline-flex;gap:10px;align-items:center;font-family:"JetBrains Mono",monospace;font-size:11.5px;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);border:1px solid var(--rule-2);
+    background:var(--panel);padding:6px 14px;border-radius:100px;margin-bottom:26px;position:relative}
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+  h1{font-family:"Sora",sans-serif;font-weight:800;font-size:clamp(2.5rem,6.2vw,4.1rem);line-height:1.03;
+    letter-spacing:-.035em;margin:0 auto 22px;max-width:16ch;text-wrap:balance;position:relative}
+  h1 .g{color:var(--muted)}
+  .hero p.sub{font-size:clamp(1.02rem,2vw,1.2rem);color:var(--muted);max-width:56ch;margin:0 auto 30px;position:relative}
+  .hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative}
+  .btn-lg{font-size:15px;padding:13px 24px;border-radius:10px}
+  .btn-ghost-lg{background:var(--panel);color:var(--ink);border:1px solid var(--rule-2);font-weight:600;font-size:15px;padding:13px 24px;border-radius:10px;font-family:"Inter",sans-serif;cursor:pointer}
+  .btn-ghost-lg:hover{border-color:var(--faint)}
+  .micro{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--faint);margin-top:20px;position:relative}
+
+  /* product mockup */
+  .shot{margin:52px auto 0;max-width:960px;position:relative}
+  .frame{background:var(--panel);border:1px solid var(--rule-2);border-radius:14px 14px 0 0;overflow:hidden;box-shadow:0 -1px 0 rgba(255,255,255,.03),0 40px 90px -40px rgba(0,0,0,.8)}
+  .frame .bar{height:40px;display:flex;align-items:center;gap:8px;padding:0 16px;border-bottom:1px solid var(--rule);background:var(--panel-2)}
+  .frame .bar i{width:11px;height:11px;border-radius:50%;background:var(--rule-2);display:inline-block}
+  .frame .bar .url{margin-left:14px;font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--faint);background:var(--void);border:1px solid var(--rule);border-radius:6px;padding:4px 12px}
+  .stage{position:relative;min-height:360px;background:
+      radial-gradient(circle at 20% 10%,rgba(37,214,232,.05),transparent 40%),
+      var(--void);padding:34px 30px;overflow:hidden}
+  .stage .demo-site{max-width:520px}
+  .stage .ds-tag{font-family:"JetBrains Mono";font-size:11px;color:var(--faint);letter-spacing:.1em}
+  .stage h3{font-family:"Sora";font-weight:700;font-size:1.5rem;margin:10px 0 8px;color:var(--ink)}
+  .stage .ds-p{color:var(--muted);font-size:14px;max-width:44ch;margin:0}
+  .stage .skeleton{height:8px;border-radius:4px;background:var(--rule);margin-top:20px;max-width:80%}
+  .stage .skeleton.s2{max-width:60%;margin-top:12px}
+  /* floating widget bubble */
+  .widget{position:absolute;right:28px;bottom:26px;width:290px;background:var(--panel);border:1px solid var(--rule-2);
+    border-radius:16px;box-shadow:0 24px 60px -24px rgba(0,0,0,.8),0 0 0 1px rgba(37,214,232,.08);overflow:hidden}
+  .widget .wtop{padding:16px 18px 12px}
+  .widget .wtop .q{font-family:"Sora";font-weight:600;font-size:15px;margin:0}
+  .widget .wtop .s{color:var(--muted);font-size:12px;margin:3px 0 0}
+  .widget .stars{display:flex;gap:6px;padding:4px 18px 16px}
+  .widget .stars svg{width:26px;height:26px}
+  .widget .wfoot{border-top:1px solid var(--rule);padding:9px 18px;font-family:"JetBrains Mono";font-size:10px;color:var(--faint);letter-spacing:.08em}
+  .widget .wfoot b{color:var(--muted)}
+  /* stat card */
+  .statcard{position:absolute;left:30px;bottom:30px;background:var(--panel);border:1px solid var(--rule-2);border-radius:12px;padding:14px 16px;width:190px;box-shadow:0 20px 50px -22px rgba(0,0,0,.7)}
+  .statcard .lab{font-family:"JetBrains Mono";font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+  .statcard .big{font-family:"Sora";font-weight:800;font-size:1.9rem;line-height:1;margin:6px 0 2px;display:flex;align-items:center;gap:7px}
+  .statcard .big svg{width:20px;height:20px}
+  .statcard .spark{margin-top:10px}
+  @media (max-width:760px){
+    .stage{min-height:auto;padding:24px 20px 26px;display:flex;flex-direction:column;gap:22px}
+    .stage .demo-site{max-width:none}
+    .statcard{position:static;left:auto;bottom:auto;width:100%}
+    .widget{position:static;width:100%;max-width:340px;margin:0 auto}
+  }
+
+  /* works-with */
+  .works{padding:64px 0 0}
+  .works-line{text-align:center;font-family:"JetBrains Mono";font-size:12px;letter-spacing:.05em;color:var(--faint);margin:0;padding:26px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+
+  /* sections */
+  section.block{padding:80px 0}
+  .sec-head{text-align:center;max-width:60ch;margin:0 auto 44px}
+  .sec-head .k{font-family:"JetBrains Mono";font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);margin-bottom:14px}
+  .sec-head h2{font-family:"Sora";font-weight:700;font-size:clamp(1.8rem,3.8vw,2.5rem);letter-spacing:-.025em;line-height:1.08;margin:0 0 14px;text-wrap:balance}
+  .sec-head p{color:var(--muted);margin:0;font-size:1.05rem}
+
+  .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .pcard{background:var(--panel);border:1px solid var(--rule);border-radius:16px;padding:26px;transition:border-color .2s}
+  .pcard:hover{border-color:var(--rule-2)}
+  .pcard .ic{width:44px;height:44px;border-radius:11px;background:var(--raised);border:1px solid var(--rule-2);display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+  .pcard .ic svg{width:22px;height:22px;stroke:var(--cyan)}
+  .pcard h3{font-family:"Sora";font-weight:600;font-size:1.25rem;margin:0 0 6px;letter-spacing:-.01em}
+  .pcard .d{color:var(--muted);font-size:14px;margin:0 0 16px}
+  .pcard ul{list-style:none;padding:0;margin:0}
+  .pcard li{font-size:13.5px;color:var(--ink);padding:7px 0;border-top:1px solid var(--rule);display:flex;align-items:center;gap:9px}
+  .pcard li::before{content:"";width:5px;height:5px;border-radius:1px;background:var(--cyan);flex:0 0 auto}
+  .pcard li .soon{margin-left:auto;font-family:"JetBrains Mono";font-size:9px;color:var(--faint);letter-spacing:.06em}
+
+  /* pricing */
+  .pricing{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:800px;margin:0 auto}
+  .plan{background:var(--panel);border:1px solid var(--rule);border-radius:18px;padding:30px}
+  .plan.hosted{border-color:var(--cyan-deep);box-shadow:0 0 0 1px var(--cyan-deep),0 30px 70px -40px var(--glow);position:relative}
+  .plan .tag{font-family:"JetBrains Mono";font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .plan.hosted .tag{color:var(--cyan)}
+  .plan .price{font-family:"Sora";font-weight:800;font-size:2.6rem;line-height:1;margin:14px 0 4px}
+  .plan .price .free{color:var(--cyan)}
+  .plan .price small{font-size:1rem;font-weight:500;color:var(--muted)}
+  .plan .cap{color:var(--muted);font-size:13.5px;margin:0 0 20px;min-height:38px}
+  .plan ul{list-style:none;padding:0;margin:0 0 24px}
+  .plan li{font-size:14px;padding:8px 0;color:var(--ink);display:flex;gap:10px;align-items:center}
+  .plan li svg{width:15px;height:15px;stroke:var(--cyan);flex:0 0 auto}
+  .plan .btn,.plan .btn-ghost-lg{width:100%;text-align:center;display:block}
+
+  /* final cta */
+  .final{text-align:center;padding:90px 0}
+  .final h2{font-family:"Sora";font-weight:800;font-size:clamp(2rem,4.4vw,3rem);letter-spacing:-.03em;margin:0 0 16px;text-wrap:balance}
+  .final p{color:var(--muted);margin:0 0 28px;font-size:1.1rem}
+
+  footer{border-top:1px solid var(--rule);padding:44px 0 60px}
+  .foot{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap}
+  .foot .lead{max-width:280px}
+  .foot .lead p{color:var(--faint);font-size:13px;margin:12px 0 0}
+  .foot-cols{display:flex;gap:56px;flex-wrap:wrap}
+  .foot-cols h4{font-family:"JetBrains Mono";font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin:0 0 14px}
+  .foot-cols a{display:block;font-size:13.5px;color:var(--muted);margin-bottom:9px}
+  .foot-cols a:hover{color:var(--ink)}
+  .foot-bot{border-top:1px solid var(--rule);margin-top:40px;padding-top:22px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-family:"JetBrains Mono";font-size:11.5px;color:var(--faint)}
+  .foot-bot .c{color:var(--cyan)}
+
+  @media (max-width:860px){.nav-links{display:none}.pillars{grid-template-columns:1fr}.pricing{grid-template-columns:1fr}}
+  @media (prefers-reduced-motion:no-preference){
+    .fade{opacity:0;transform:translateY(14px);animation:up .7s cubic-bezier(.2,.7,.2,1) forwards}
+    .fade.d1{animation-delay:.06s}.fade.d2{animation-delay:.12s}.fade.d3{animation-delay:.18s}.fade.d4{animation-delay:.24s}
+    @keyframes up{to{opacity:1;transform:none}}
+  }
+
+  /* === reassurance + how it works === */
+  .reassure{max-width:660px;margin:0 auto;text-align:center;background:var(--panel);border:1px solid var(--rule-2);border-radius:14px;padding:18px 24px}
+  .reassure p{margin:0;color:var(--ink);font-size:1.06rem}
+  .reassure .hi{color:var(--cyan);font-weight:600}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:6px}
+  .step{background:var(--panel);border:1px solid var(--rule);border-radius:16px;padding:24px}
+  .step .n{font-family:"JetBrains Mono";font-size:10.5px;color:var(--faint);letter-spacing:.14em;text-transform:uppercase}
+  .step h3{font-family:"Sora";font-weight:600;font-size:1.15rem;margin:10px 0 6px}
+  .step > p{color:var(--muted);font-size:14px;margin:0 0 16px}
+  .step .mini{background:var(--void);border:1px solid var(--rule);border-radius:10px;padding:14px;min-height:58px;display:flex;align-items:center;justify-content:center}
+  .step .code{font-family:"JetBrains Mono";font-size:11px;color:var(--muted);word-break:break-all}
+  .step .code .cy{color:var(--cyan)}
+  .pill-btn{font-family:"Inter";font-size:12.5px;font-weight:600;background:var(--raised);border:1px solid var(--rule-2);color:var(--ink);border-radius:100px;padding:8px 15px;display:inline-flex;gap:7px;align-items:center}
+  .pill-btn svg{width:14px;height:14px;fill:var(--cyan)}
+
+  /* === showcase scenes === */
+  .showcase{display:flex;flex-direction:column;gap:64px;margin-top:8px}
+  .scene{display:grid;grid-template-columns:1fr 1fr;gap:46px;align-items:center}
+  .scene.flip .scene-visual{order:2}
+  .scene-text .tag{font-family:"JetBrains Mono";font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+  .scene-text h3{font-family:"Sora";font-weight:700;font-size:clamp(1.4rem,2.6vw,1.85rem);letter-spacing:-.02em;line-height:1.14;margin:0 0 12px;text-wrap:balance}
+  .scene-text p{color:var(--muted);font-size:1.02rem;margin:0}
+  .scene-text em{color:var(--ink);font-style:normal;font-weight:600}
+  .mini-frame{background:var(--panel);border:1px solid var(--rule-2);border-radius:14px;overflow:hidden;box-shadow:0 30px 70px -42px rgba(0,0,0,.85)}
+  .mini-frame .mbar{height:34px;display:flex;align-items:center;gap:7px;padding:0 14px;border-bottom:1px solid var(--rule);background:var(--panel-2)}
+  .mini-frame .mbar i{width:9px;height:9px;border-radius:50%;background:var(--rule-2)}
+  .mini-frame .mbar .u{margin-left:10px;font-family:"JetBrains Mono";font-size:11px;color:var(--faint)}
+  .mini-body{padding:22px;min-height:212px;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 15% 0%,rgba(37,214,232,.05),transparent 45%),var(--void)}
+  .glist{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:16px 18px;width:100%;max-width:330px}
+  .glist .gu{font-family:"JetBrains Mono";font-size:11px;color:var(--muted)}
+  .glist .gt{color:#7cc7ff;font-size:16px;margin:5px 0 7px;font-weight:500;line-height:1.2}
+  .glist .rate{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+  .glist .rate .st{color:var(--cyan);letter-spacing:1px}
+  .glist .gd{color:var(--faint);font-size:12.5px;margin-top:9px}
+  .inbox{display:flex;flex-direction:column;gap:10px;width:100%;max-width:330px}
+  .inbox .msg{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:12px 14px;display:flex;gap:11px;align-items:flex-start}
+  .inbox .msg.alert{border-color:var(--cyan-deep);box-shadow:0 0 0 1px rgba(37,214,232,.12)}
+  .inbox .av{width:30px;height:30px;border-radius:50%;background:var(--raised);border:1px solid var(--rule-2);flex:0 0 auto;display:flex;align-items:center;justify-content:center;font-family:"JetBrains Mono";font-size:12px;color:var(--cyan)}
+  .inbox .who{font-size:13px;font-weight:600;color:var(--ink)}
+  .inbox .txt{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .inbox .priv{font-family:"JetBrains Mono";font-size:9px;letter-spacing:.06em;color:var(--cyan);margin-top:7px}
+  .dash{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:340px}
+  .dash .kpi{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:14px}
+  .dash .kpi .l{font-family:"JetBrains Mono";font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+  .dash .kpi .v{font-family:"Sora";font-weight:800;font-size:1.5rem;margin-top:5px;display:flex;align-items:center;gap:6px}
+  .dash .kpi .v svg{width:16px;height:16px;fill:var(--cyan)}
+  .dash .wide{grid-column:1/3;background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .dash .wide .rev{font-size:12px;color:var(--muted)}
+  .dash .wide .badge{font-family:"JetBrains Mono";font-size:9px;color:var(--cyan);border:1px solid var(--cyan-deep);border-radius:100px;padding:3px 9px;flex:0 0 auto}
+
+  /* === welcome === */
+  .welcome{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:860px;margin:0 auto}
+  .wcard{background:var(--panel);border:1px solid var(--rule-2);border-radius:18px;padding:30px}
+  .wcard .ic{width:44px;height:44px;border-radius:11px;background:var(--raised);border:1px solid var(--rule-2);display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+  .wcard .ic svg{width:22px;height:22px;stroke:var(--cyan);fill:none}
+  .wcard .who2{font-family:"JetBrains Mono";font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .wcard h3{font-family:"Sora";font-weight:700;font-size:1.3rem;margin:0 0 10px;letter-spacing:-.01em}
+  .wcard > p{color:var(--muted);font-size:14.5px;margin:0}
+  .welcome-note{text-align:center;color:var(--muted);margin:26px auto 0;font-size:1.05rem;max-width:46ch}
+  .welcome-note .cy{color:var(--cyan);font-weight:600}
+
+  @media (max-width:780px){.steps,.welcome{grid-template-columns:1fr}.scene{grid-template-columns:1fr;gap:24px}.scene.flip .scene-visual{order:0}}
+
+  /* mobile-first polish */
+  @media (max-width:640px){
+    .wrap{padding:0 18px}
+    section.block{padding:52px 0}
+    .hero{padding:52px 0 18px}
+    .sec-head{margin-bottom:30px}
+    .showcase{gap:44px}
+    .steps,.welcome,.pricing{gap:14px}
+    h1{font-size:2.4rem;letter-spacing:-.03em}
+    .hero p.sub{font-size:1.02rem}
+    .shot{margin-top:36px}
+    .hero-cta{flex-direction:column;align-items:stretch}
+    .btn-lg,.btn-ghost-lg{width:100%;text-align:center}
+    .foot{gap:28px}.foot-cols{gap:34px}
+    .works{padding:48px 0 0}
+    .pcard,.step,.wcard,.plan{padding:22px}
+  }
+  @media (max-width:520px){
+    .nav-cta .ghost{display:none}
+    .final h2,.sec-head h2{font-size:1.7rem}
+  }
+</style>
+
+<div class="grid-bg"></div>
+<main>
+
+  <!-- NAV -->
+  <nav><div class="wrap nav-in">
+    <div class="brand">
+      <svg width="30" height="30" viewBox="0 0 42 42" fill="none" aria-hidden="true">
+        <rect x="1" y="1" width="40" height="40" rx="11" stroke="#2E333C"/>
+        <path d="M11 27 L21 14 L31 27" stroke="#25D6E8" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="wm">nod<span class="c">peak</span></span>
+    </div>
+    <div class="nav-links">
+      <a href="#product">Product</a><a href="#pricing">Pricing</a><a href="#">Docs</a>
+    </div>
+    <div class="nav-cta">
+      <a class="ghost" href="#"><span class="star">★</span> Star · 0</a>
+      <button class="btn">Get started</button>
+    </div>
+  </div></nav>
+
+  <!-- HERO -->
+  <header class="hero"><div class="wrap">
+    <span class="eyebrow fade"><span class="dot"></span> Open source · Self-host free</span>
+    <h1 class="fade d1">Everything your website needs <span class="g">to win more customers.</span></h1>
+    <p class="sub fade d2">Reviews, SEO, and the tools that turn visitors into sales — the whole bundle, in one line of code. Free to run yourself, or $15 a month if we host it for you.</p>
+    <div class="hero-cta fade d3">
+      <button class="btn btn-lg">Self-host free →</button>
+      <button class="btn-ghost-lg">Try hosted</button>
+    </div>
+    <p class="micro fade d4">No credit card · works on any website · live in minutes</p>
+
+    <!-- PRODUCT MOCKUP -->
+    <div class="shot fade d4" id="product">
+      <div class="frame">
+        <div class="bar"><i></i><i></i><i></i><span class="url">yourbusiness.com</span></div>
+        <div class="stage">
+          <div class="demo-site">
+            <div class="ds-tag">YOUR SITE</div>
+            <h3>Bright Spark Electrical</h3>
+            <p class="ds-p">Licensed electricians serving the whole city. Fast, tidy, and fairly priced — same-day callouts available.</p>
+            <div class="skeleton"></div><div class="skeleton s2"></div>
+          </div>
+
+          <div class="statcard">
+            <div class="lab">Your rating</div>
+            <div class="big">4.9
+              <svg viewBox="0 0 24 24" fill="#25D6E8"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.6 1.4 6.8L12 17.8 5.9 20.4l1.4-6.8L2.2 9l6.9-.7z"/></svg>
+            </div>
+            <div class="lab">128 reviews · +14 this month</div>
+            <svg class="spark" width="158" height="34" viewBox="0 0 158 34" fill="none">
+              <polyline points="2,28 24,24 46,26 68,18 90,20 112,10 134,12 156,4" stroke="#25D6E8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="156" cy="4" r="3" fill="#25D6E8"/>
+            </svg>
+          </div>
+
+          <div class="widget">
+            <div class="wtop">
+              <p class="q">How did we do?</p>
+              <p class="s">Takes 10 seconds — it helps a lot.</p>
+            </div>
+            <div class="stars">
+              <svg viewBox="0 0 24 24" fill="#25D6E8"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.6 1.4 6.8L12 17.8 5.9 20.4l1.4-6.8L2.2 9l6.9-.7z"/></svg>
+              <svg viewBox="0 0 24 24" fill="#25D6E8"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.6 1.4 6.8L12 17.8 5.9 20.4l1.4-6.8L2.2 9l6.9-.7z"/></svg>
+              <svg viewBox="0 0 24 24" fill="#25D6E8"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.6 1.4 6.8L12 17.8 5.9 20.4l1.4-6.8L2.2 9l6.9-.7z"/></svg>
+              <svg viewBox="0 0 24 24" fill="#25D6E8"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.6 1.4 6.8L12 17.8 5.9 20.4l1.4-6.8L2.2 9l6.9-.7z"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="#25D6E8" stroke-width="1.6"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.6 1.4 6.8L12 17.8 5.9 20.4l1.4-6.8L2.2 9l6.9-.7z"/></svg>
+            </div>
+            <div class="wfoot">◆ REVIEWS BY <b>NODPEAK</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div></header>
+
+  <!-- WORKS WITH -->
+  <div class="works"><div class="wrap">
+    <p class="works-line">Works on any website — WordPress, Shopify, Webflow, Wix, or plain HTML.</p>
+  </div></div>
+
+  <!-- HOW IT WORKS -->
+  <section class="block"><div class="wrap">
+    <div class="sec-head">
+      <div class="k">How it works</div>
+      <h2>Never written a line of code? Perfect.</h2>
+      <p>This was built for exactly you. Three steps, no technical knowledge needed — and if one ever feels tricky, we'll just do it for you.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="n">STEP 01</div>
+        <h3>Add it to your website</h3>
+        <p>Copy one line, paste it in. Not sure where it goes? We'll show you the exact spot — or do it for you.</p>
+        <div class="mini"><span class="code">&lt;script src="<span class="cy">nodpeak.com/w.js</span>"&gt;&lt;/script&gt;</span></div>
+      </div>
+      <div class="step">
+        <div class="n">STEP 02</div>
+        <h3>A friendly button appears</h3>
+        <p>A little "Leave a review" button shows up on your site. Nothing else to set up — it just works.</p>
+        <div class="mini"><span class="pill-btn"><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.6 1.4 6.8L12 17.8 5.9 20.4l1.4-6.8L2.2 9l6.9-.7z"/></svg> Leave a review</span></div>
+      </div>
+      <div class="step">
+        <div class="n">STEP 03</div>
+        <h3>Good things start happening</h3>
+        <p>Customers leave reviews. You climb higher on Google. More people trust you — and pick up the phone.</p>
+        <div class="mini"><svg width="100%" height="34" viewBox="0 0 200 34" fill="none" preserveAspectRatio="none"><polyline points="4,28 44,24 84,26 124,15 164,17 196,5" stroke="#25D6E8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="196" cy="5" r="3" fill="#25D6E8"/></svg></div>
+      </div>
+    </div>
+  </div></section>
+
+  <!-- PILLARS -->
+  <section class="block"><div class="wrap">
+    <div class="sec-head">
+      <div class="k">One tag, three jobs</div>
+      <h2>Everything a website is supposed to do — in one place.</h2>
+      <p>Get found, get trusted, get customers. Drop in one line of code and it handles all three.</p>
+    </div>
+    <div class="pillars">
+      <div class="pcard">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div>
+        <h3>Get found</h3>
+        <p class="d">Show up when people search for what you do.</p>
+        <ul>
+          <li>SEO audit &amp; fixes</li>
+          <li>Rich data for Google</li>
+          <li>Speed &amp; mobile check <span class="soon">soon</span></li>
+          <li>Broken-link finder <span class="soon">soon</span></li>
+        </ul>
+      </div>
+      <div class="pcard">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.6 1.4 6.8L12 17.8 5.9 20.4l1.4-6.8L2.2 9l6.9-.7z"/></svg></div>
+        <h3>Get trusted</h3>
+        <p class="d">Turn happy customers into proof a stranger believes.</p>
+        <ul>
+          <li>Review collection</li>
+          <li>Testimonials wall <span class="soon">soon</span></li>
+          <li>Star-rating badge <span class="soon">soon</span></li>
+          <li>Trust bar <span class="soon">soon</span></li>
+        </ul>
+      </div>
+      <div class="pcard">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 11l18-8-8 18-2-8z"/></svg></div>
+        <h3>Get customers</h3>
+        <p class="d">Turn a visitor into a message or a sale.</p>
+        <ul>
+          <li>Contact / quote form <span class="soon">soon</span></li>
+          <li>WhatsApp button <span class="soon">soon</span></li>
+          <li>Announcement bar <span class="soon">soon</span></li>
+          <li>Email capture <span class="soon">soon</span></li>
+        </ul>
+      </div>
+    </div>
+  </div></section>
+
+  <!-- SHOWCASE -->
+  <section class="block"><div class="wrap">
+    <div class="sec-head">
+      <div class="k">See it in action</div>
+      <h2>What it actually does for you.</h2>
+      <p>Real screens, plain words. Here's what changes for your business.</p>
+    </div>
+    <div class="showcase">
+
+      <div class="scene">
+        <div class="scene-visual">
+          <div class="mini-frame">
+            <div class="mbar"><i></i><i></i><i></i><span class="u">yourbusiness.com</span></div>
+            <div class="mini-body">
+              <div class="widget" style="position:static;width:280px">
+                <div class="wtop"><p class="q">How did we do?</p><p class="s">Takes 10 seconds — it helps a lot.</p></div>
+                <div class="stars">
+                  <svg viewBox="0 0 24 24" fill="#25D6E8"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.6 1.4 6.8L12 17.8 5.9 20.4l1.4-6.8L2.2 9l6.9-.7z"/></svg>
+                  <svg viewBox="0 0 24 24" fill="#25D6E8"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.6 1.4 6.8L12 17.8 5.9 20.4l1.4-6.8L2.2 9l6.9-.7z"/></svg>
+                  <svg viewBox="0 0 24 24" fill="#25D6E8"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.6 1.4 6.8L12 17.8 5.9 20.4l1.4-6.8L2.2 9l6.9-.7z"/></svg>
+                  <svg viewBox="0 0 24 24" fill="#25D6E8"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.6 1.4 6.8L12 17.8 5.9 20.4l1.4-6.8L2.2 9l6.9-.7z"/></svg>
+                  <svg viewBox="0 0 24 24" fill="#25D6E8"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.6 1.4 6.8L12 17.8 5.9 20.4l1.4-6.8L2.2 9l6.9-.7z"/></svg>
+                </div>
+                <div class="wfoot">◆ REVIEWS BY <b>NODPEAK</b></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="scene-text">
+          <div class="tag">Get trusted</div>
+          <h3>Your happy customers brag about you — in 10 seconds.</h3>
+          <p>When someone's pleased, a friendly little box asks how you did. One tap on the stars and they've left you a glowing review. <em>No app to download, no account to make</em> — nothing that makes them give up halfway.</p>
+        </div>
+      </div>
+
+      <div class="scene flip">
+        <div class="scene-visual">
+          <div class="mini-frame">
+            <div class="mbar"><i></i><i></i><i></i><span class="u">google.com</span></div>
+            <div class="mini-body">
+              <div class="glist">
+                <div class="gu">yourbusiness.com</div>
+                <div class="gt">Bright Spark Electrical — Same-day callouts</div>
+                <div class="rate"><span class="st">★★★★★</span> <b style="color:var(--ink)">4.9</b> · 128 reviews</div>
+                <div class="gd">Licensed electricians serving the whole city. Fast, tidy, fairly priced…</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="scene-text">
+          <div class="tag">Get found</div>
+          <h3>You look trustworthy the moment someone finds you.</h3>
+          <p>More reviews means bright stars next to your name on Google. When a customer is choosing between you and the other person down the road, <em>those stars quietly do the choosing.</em></p>
+        </div>
+      </div>
+
+      <div class="scene">
+        <div class="scene-visual">
+          <div class="mini-frame">
+            <div class="mbar"><i></i><i></i><i></i><span class="u">your private inbox</span></div>
+            <div class="mini-body">
+              <div class="inbox">
+                <div class="msg alert"><div class="av">!</div><div><div class="who">A quiet heads-up</div><div class="txt">"The job ran late and nobody called me."</div><div class="priv">◆ PRIVATE · ONLY YOU SEE THIS</div></div></div>
+                <div class="msg"><div class="av">JM</div><div><div class="who">James M.</div><div class="txt">"Brilliant — fixed it in an hour. Thank you!"</div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="scene-text">
+          <div class="tag">Stay in control</div>
+          <h3>You hear about problems first — quietly.</h3>
+          <p>If a customer isn't happy, they tell <em>you</em> privately instead of blasting it across the internet. You get a gentle heads-up, put it right, and protect the good name you've worked hard for.</p>
+        </div>
+      </div>
+
+      <div class="scene flip">
+        <div class="scene-visual">
+          <div class="mini-frame">
+            <div class="mbar"><i></i><i></i><i></i><span class="u">your dashboard</span></div>
+            <div class="mini-body">
+              <div class="dash">
+                <div class="kpi"><div class="l">Your rating</div><div class="v">4.9 <svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.6 1.4 6.8L12 17.8 5.9 20.4l1.4-6.8L2.2 9l6.9-.7z"/></svg></div></div>
+                <div class="kpi"><div class="l">New this month</div><div class="v">+14</div></div>
+                <div class="wide"><span class="rev">"Super friendly, arrived on time." — new review</span><span class="badge">NEEDS REPLY</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="scene-text">
+          <div class="tag">All in one place</div>
+          <h3>Everything on one calm, simple screen.</h3>
+          <p>No spreadsheets, no confusion. One tidy page shows your star rating, your newest reviews, and the one or two things that could use a quick reply. <em>That's the whole dashboard.</em></p>
+        </div>
+      </div>
+
+    </div>
+  </div></section>
+
+  <!-- WELCOME -->
+  <section class="block"><div class="wrap">
+    <div class="sec-head">
+      <div class="k">Two ways to start</div>
+      <h2>Both completely welcome. Pick whichever feels like you.</h2>
+      <p>There's no "better" one here — just the one that fits how you like to do things.</p>
+    </div>
+    <div class="welcome">
+      <div class="wcard">
+        <div class="ic"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 8 9 12 5 16"/><line x1="12" y1="16" x2="19" y2="16"/></svg></div>
+        <div class="who2">Free · self-host</div>
+        <h3>"I'll set it up myself."</h3>
+        <p>Love running your own things? It's yours — free, forever. Every feature, no catches, no account needed. You're fully in control, and our community is right there to help you get going.</p>
+      </div>
+      <div class="wcard">
+        <div class="ic"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 0 0 0-9 6 6 0 0 0-11.6 1.6A3.5 3.5 0 0 0 6.5 19z"/></svg></div>
+        <div class="who2">Hosted · $15/mo</div>
+        <h3>"Just do it for me."</h3>
+        <p>Don't want to think about servers or code? Wonderful — we'll quietly handle every technical bit behind the scenes. You just log in and use it, like any app you already know. Cancel any time.</p>
+      </div>
+    </div>
+    <p class="welcome-note">Whichever you choose, you're never on your own. <span class="cy">Welcome, either way.</span></p>
+  </div></section>
+
+  <!-- PRICING -->
+  <section class="block" id="pricing"><div class="wrap">
+    <div class="sec-head">
+      <div class="k">Pricing</div>
+      <h2>Free for your community. Hosted for everyone else.</h2>
+      <p>The whole thing is open source. Run it yourself for nothing, or let us run it.</p>
+    </div>
+    <div class="pricing">
+      <div class="plan">
+        <div class="tag">Self-host</div>
+        <div class="price"><span class="free">Free</span> <small>forever</small></div>
+        <p class="cap">For your community and anyone happy to run it on their own server.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Every feature, no limits</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Your server, your data</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Open source on GitHub</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> No account, no phone-home</li>
+        </ul>
+        <button class="btn-ghost-lg">Read the docs</button>
+      </div>
+      <div class="plan hosted">
+        <div class="tag">Hosted</div>
+        <div class="price">$15<small>/month</small></div>
+        <p class="cap">For people who'd rather not touch a server. We run it, update it, back it up.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Everything in self-host</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> We host, update &amp; back up</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Live in two minutes</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Cancel anytime</li>
+        </ul>
+        <button class="btn">Start hosted →</button>
+      </div>
+    </div>
+  </div></section>
+
+  <!-- FINAL -->
+  <section class="final"><div class="wrap">
+    <h2>Give your website the upgrade it's been missing.</h2>
+    <p>Self-host it in five minutes, or let us run it. Either way, one line of code.</p>
+    <div class="hero-cta">
+      <button class="btn btn-lg">Self-host free →</button>
+      <button class="btn-ghost-lg">Try hosted · $15/mo</button>
+    </div>
+  </div></section>
+
+  <!-- FOOTER -->
+  <footer><div class="wrap">
+    <div class="foot">
+      <div class="lead">
+        <div class="brand">
+          <svg width="26" height="26" viewBox="0 0 42 42" fill="none"><rect x="1" y="1" width="40" height="40" rx="11" stroke="#2E333C"/><path d="M11 27 L21 14 L31 27" stroke="#25D6E8" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="wm mono" style="font-weight:700">nod<span style="color:var(--cyan)">peak</span></span>
+        </div>
+        <p>Everything your website needs to win more customers — in one line of code. Open source, forever.</p>
+        <p style="margin-top:14px;font-size:13px;color:var(--faint)">Built by <a href="https://noumansadiq.com" style="color:var(--ink);font-weight:600">Nouman Sadiq</a> — one of 70+ tools I've made. <a href="https://noumansadiq.com" style="color:var(--cyan)">See them all →</a></p>
+      </div>
+      <div class="foot-cols">
+        <div><h4>Product</h4><a href="#">Features</a><a href="#pricing">Pricing</a><a href="#">Widgets</a><a href="#">Live demo</a></div>
+        <div><h4>Developers</h4><a href="#">Docs</a><a href="#">GitHub</a><a href="#">Self-host guide</a><a href="#">Changelog</a></div>
+        <div><h4>Company</h4><a href="https://noumansadiq.com">Nouman Sadiq ↗</a><a href="#">About</a><a href="#">Contact</a><a href="#">X / Twitter</a></div>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 Nodpeak</span>
+      <span>A <a href="https://noumansadiq.com" style="color:var(--muted)"><b style="color:var(--ink)">Nouman Sadiq</b></a> project · <span class="c">◆</span> Open source · AGPL-3.0</span>
+    </div>
+  </div></footer>
+
+</main>
