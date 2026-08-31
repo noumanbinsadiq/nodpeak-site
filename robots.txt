@@ -1,0 +1,58 @@
+# Nodpeak — free, open-source review & SEO widget for any website.
+# This site is free to crawl, index, and cite — including by AI assistants,
+# answer engines, and research agents helping someone evaluate this tool.
+# Machine-readable summary for AI agents: https://nodpeak.com/llms.txt
+
+User-agent: *
+Allow: /
+
+# Common AI / LLM crawlers — explicitly welcomed
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: Diffbot
+Allow: /
+
+Sitemap: https://nodpeak.com/sitemap.xml
