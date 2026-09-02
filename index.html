@@ -28,7 +28,10 @@
 <meta name="twitter:description" content="Free, open-source review, SEO and trust widgets for any website. One line of code, live in minutes.">
 <meta name="twitter:image" content="https://nodpeak.com/og-image.png">
 
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap"></noscript>
 
 <script type="application/ld+json">
 {
@@ -140,7 +143,7 @@
 
 <style>
   :root{
-    --void:#0A0B0D; --panel:#101216; --panel-2:#15181E; --raised:#1C2027;
+    --ink:#F4F6F9; --muted:#98A1AE; --faint:#858D97; --rule:#22262E; --rule-2:#2E333C;
     --ink:#F4F6F9; --muted:#98A1AE; --faint:#5C646F; --rule:#22262E; --rule-2:#2E333C;
     --cyan:#25D6E8; --cyan-dim:#17A8B8; --cyan-deep:#0C6E79;
     --glow:rgba(37,214,232,.16); --grid:rgba(255,255,255,.025);
@@ -208,7 +211,7 @@
       var(--void);padding:34px 30px;overflow:hidden}
   .stage .demo-site{max-width:520px}
   .stage .ds-tag{font-family:"JetBrains Mono";font-size:11px;color:var(--faint);letter-spacing:.1em}
-  .stage h3{font-family:"Sora";font-weight:700;font-size:1.5rem;margin:10px 0 8px;color:var(--ink)}
+  .stage .ds-h3{font-family:"Sora";font-weight:700;font-size:1.5rem;margin:10px 0 8px;color:var(--ink)}
   .stage .ds-p{color:var(--muted);font-size:14px;max-width:44ch;margin:0}
   .stage .skeleton{height:8px;border-radius:4px;background:var(--rule);margin-top:20px;max-width:80%}
   .stage .skeleton.s2{max-width:60%;margin-top:12px}
@@ -450,9 +453,8 @@
         <div class="stage">
           <div class="demo-site">
             <div class="ds-tag">YOUR SITE</div>
-            <h3>Bright Spark Electrical</h3>
+            <div class="ds-h3">Bright Spark Electrical</div>
             <p class="ds-p">Licensed electricians serving the whole city. Fast, tidy, and fairly priced — same-day callouts available.</p>
-            <div class="skeleton"></div><div class="skeleton s2"></div>
           </div>
 
           <div class="statcard">
