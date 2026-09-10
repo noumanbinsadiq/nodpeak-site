@@ -400,6 +400,31 @@
   .ai-note{max-width:760px;margin:14px auto 0;text-align:center}
   .ai-note p{color:var(--faint);font-size:12.5px;line-height:1.7;font-family:"JetBrains Mono",monospace}
   .ai-note a{color:var(--cyan);text-decoration:underline}
+
+  /* for-business card */
+  .biz-wrap{max-width:960px;margin:0 auto}
+  .biz{position:relative;display:grid;grid-template-columns:1.35fr 1fr;gap:34px;align-items:center;
+    background:linear-gradient(135deg,var(--panel),var(--panel-2));border:1px solid var(--cyan-deep);
+    border-radius:20px;padding:40px 42px;overflow:hidden;
+    box-shadow:0 0 0 1px rgba(37,214,232,.06),0 40px 90px -50px var(--glow)}
+  .biz::before{content:"";position:absolute;right:-80px;top:-80px;width:320px;height:320px;pointer-events:none;
+    background:radial-gradient(circle at center,var(--glow),transparent 68%);filter:blur(10px)}
+  .biz-txt{position:relative}
+  .biz-txt .k{font-family:"JetBrains Mono";font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);margin-bottom:14px}
+  .biz-txt h2{font-family:"Sora";font-weight:700;font-size:clamp(1.5rem,3vw,2rem);letter-spacing:-.02em;line-height:1.1;margin:0 0 12px;text-wrap:balance}
+  .biz-txt p{color:var(--muted);font-size:15px;margin:0 0 8px}
+  .biz-txt .fine{font-family:"JetBrains Mono";font-size:12px;color:var(--faint);margin:14px 0 0}
+  .biz-side{position:relative;display:flex;flex-direction:column;gap:12px}
+  .biz-list{list-style:none;padding:0;margin:0 0 4px}
+  .biz-list li{font-size:14px;color:var(--ink);padding:8px 0;border-top:1px solid var(--rule);display:flex;gap:10px;align-items:center}
+  .biz-list li:first-child{border-top:none}
+  .biz-list li svg{width:15px;height:15px;stroke:var(--cyan);flex:0 0 auto}
+  .biz-btn{background:var(--cyan);color:#04181B;font-weight:600;font-size:15px;padding:13px 22px;border-radius:10px;
+    display:inline-flex;align-items:center;justify-content:center;gap:9px;transition:box-shadow .2s,transform .1s;text-align:center}
+  .biz-btn:hover{box-shadow:0 0 28px -6px var(--glow)}
+  .biz-btn:active{transform:translateY(1px)}
+  .biz-btn svg{width:16px;height:16px;flex:0 0 auto}
+  @media (max-width:780px){.biz{grid-template-columns:1fr;gap:24px;padding:30px 26px}}
 </style>
 </head>
 <body>
@@ -416,7 +441,7 @@
       <span class="wm">nod<span class="c">peak</span></span>
     </div>
     <div class="nav-links">
-      <a href="#product">Product</a><a href="#pricing">Free</a><a href="https://github.com/nodpeakapp/nodpeak#readme">Docs</a><a href="https://app.nodpeak.com/login">Log in</a>
+      <a href="#product">Product</a><a href="#pricing">Free</a><a href="/for-your-business.html">For business</a><a href="https://github.com/nodpeakapp/nodpeak#readme">Docs</a><a href="https://app.nodpeak.com/login">Log in</a>
     </div>
     <div class="nav-cta">
       <a class="ghost" href="https://github.com/nodpeakapp/nodpeak"><span class="star">★</span> Star · 0</a>
@@ -755,6 +780,33 @@
   </div></section>
 
 
+  <!-- FOR BUSINESSES -->
+  <section class="block" id="for-business"><div class="wrap">
+    <div class="biz-wrap">
+      <div class="biz">
+        <div class="biz-txt">
+          <div class="k">For businesses</div>
+          <h2>Want Nodpeak built around your business?</h2>
+          <p>The tool is free, forever. But if you'd rather have it set up for you — with your logo, your products and your prices, connected to how you already work — a real person will build it with you.</p>
+          <p>Plus the custom systems and automations you wish existed, built around the way your business actually runs.</p>
+          <p class="fine">◆ A real person replies within one business day. No bots.</p>
+        </div>
+        <div class="biz-side">
+          <ul class="biz-list">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Your brand, data &amp; website</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Installed &amp; integrated for you</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Custom automations around your workflow</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Clear price before you pay a thing</li>
+          </ul>
+          <a class="biz-btn" href="/for-your-business.html">
+            Get it for my business
+            <svg viewBox="0 0 24 24" fill="none" stroke="#04181B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div></section>
+
   <!-- FAQ -->
   <section class="block" id="faq"><div class="wrap">
     <div class="sec-head">
@@ -823,7 +875,7 @@
         <p style="margin-top:14px;font-size:13px;color:var(--faint)">Built by <a href="https://noumansadiq.com" style="color:var(--ink);font-weight:600">Nouman Sadiq</a> — one of 70+ tools I've made. <a href="https://noumansadiq.com" style="color:var(--cyan);text-decoration:underline">See them all →</a></p>
       </div>
       <div class="foot-cols">
-        <div><h3>Product</h3><a href="#guide">Features</a><a href="#pricing">Free</a><a href="#product">Widgets</a><a href="https://app.nodpeak.com/grader">Live demo</a></div>
+        <div><h3>Product</h3><a href="#guide">Features</a><a href="#pricing">Free</a><a href="/for-your-business.html">For business</a><a href="#product">Widgets</a><a href="https://app.nodpeak.com/grader">Live demo</a></div>
         <div><h3>Developers</h3><a href="https://github.com/nodpeakapp/nodpeak#readme">Docs</a><a href="https://github.com/nodpeakapp/nodpeak">GitHub</a><a href="https://github.com/nodpeakapp/nodpeak#self-host-5-minutes-one-command">Self-host guide</a><a href="https://github.com/nodpeakapp/nodpeak/commits/main">Changelog</a></div>
         <div><h3>Company</h3><a href="https://noumansadiq.com">Nouman Sadiq ↗</a><a href="https://noumansadiq.com">About</a><a href="https://noumansadiq.com">Contact</a></div>
       </div>
